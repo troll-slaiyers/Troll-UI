@@ -36,6 +36,7 @@ class TrollSlicedSprite extends FlxSprite implements IComponent
 	public function new(x: Float = 0, y: Float = 0, ?width: Float, ?height: Float, ?graphic: String, ?margins:Array<Int>)
 	{
 		super(x, y);
+		antialiasing = false;
 		loadGraphic(graphic ?? "assets/images/panel.png");
 
 		if(margins != null)
