@@ -2,6 +2,7 @@ package trollui;
 
 import flixel.FlxG;
 import flixel.text.FlxText.FlxTextAlign;
+import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.util.FlxColor;
 import trollui.TrollComponent.UIEvent;
 
@@ -61,6 +62,7 @@ class TrollButton extends TrollComponent
 		label = new TrollLabel(0, 0, width, text);
 		label.color = FlxColor.WHITE;
 		label.alignment = FlxTextAlign.CENTER;
+		label.borderStyle = FlxTextBorderStyle.NONE;
 		add(label);
 
 		this.color = color;

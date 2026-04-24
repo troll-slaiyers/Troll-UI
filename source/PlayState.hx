@@ -7,6 +7,7 @@ import flixel.FlxState;
 import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 import trollui.TrollButton;
+import trollui.TrollCheckbox;
 import trollui.TrollContainer;
 import trollui.TrollLabel;
 import trollui.TrollUI;
@@ -30,6 +31,9 @@ class PlayState extends FlxState
 		var text: TrollLabel = new TrollLabel(25, 25, 0, "Test");
 		container.add(text);
 
+		var checkbox:TrollCheckbox = new TrollCheckbox(75, 150, "fuck!");
+		container.add(checkbox);
+		
 		var button:TrollButton = new TrollButton(50, 75, "Butt Bad", 100, 25, FlxColor.RED);
 		button.name = "bad_button";
 		container.add(button);
@@ -37,8 +41,7 @@ class PlayState extends FlxState
 		var container2:TrollContainer = new TrollContainer(400, 0, 200, 200);
 		parent.add(container2);
 
-		var button:TrollButton = new TrollButton(50, 75, "Butt Good", 100, 25, FlxColor.GREEN);
-
+		var button:TrollButton = new TrollButton(50, 75, "Butt Good", 100, 25, FlxColor.LIME);
 		button.name = "good_button";
 		container2.add(button);
 		parent.handleEvent = (event, sender, data) ->
@@ -54,6 +57,10 @@ class PlayState extends FlxState
 						text.text = "BAD";
 						text.color = 0xFF00FF00;
 				}
+			}
+			else if (event == TrollCheckbox.CLICK_EVENT)
+			{
+				trace("checked box " + data);
 			}
 		}
 		
