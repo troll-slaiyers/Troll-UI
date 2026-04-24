@@ -17,10 +17,17 @@ class PlayState extends FlxState
 	override public function create()
 	{	
 		FlxG.mouse.useSystemCursor = true;
-		
+
 		FlxG.camera.bgColor = 0xFF444444;
 
 		parent = new TrollUI();
+		parent.handleEvent = (event, sender, data) ->
+		{
+			if (event == TrollButton.CLICK_EVENT)
+			{
+				trace("button clicked");
+			}
+		}
 		add(parent);
 		
 		var container:TrollContainer = new TrollContainer(0, 0, 350, 200);
@@ -33,7 +40,7 @@ class PlayState extends FlxState
 		button.color = 0xFFFF0000;
 		container.add(button);
 	
-		var container2:TrollContainer = new TrollContainer(100, 0, 150, 200);
+		var container2:TrollContainer = new TrollContainer(400, 0, 200, 200);
 		parent.add(container2);
 
 		var button: TrollButton = new TrollButton(50, 75, "Butt Good", 100, 25);

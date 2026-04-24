@@ -27,11 +27,19 @@ class ButtonBack extends TrollSlicedSprite
 
 class TrollButton extends TrollComponent
 {
+	public static final DOWN_EVENT = "down_button";
+	public static final ENTER_EVENT = "enter_button";
+	public static final LEAVE_EVENT = "leave_button";
+	public static final CLICK_EVENT = "click_button";
+
 	var state: PreSsState = IDLE;
 
 	var bg: ButtonBack;
 	var label: TrollLabel;
 
+	var labelCenterX:Float = 0;
+	var labelCenterY:Float = 0;
+	
 	public function new(x: Float, y:Float, text:String, width:Float = 0, height:Float = 0)
 	{
 		super(x, y);
@@ -45,15 +53,15 @@ class TrollButton extends TrollComponent
 		add(label);
 
 		if(width == 0)
-			bg.width = label.width;
+			bg.width = label.fieldWidth;
 
 		if(height == 0)
 			bg.height = label.height;
 
-		label.y += (bg.height - label.textField.height) / 2;
+		labelCenterX = (bg.width - label.fieldWidth) / 2;
+		labelCenterY = (bg.height - label.textField.height) / 2;
 
 		onUnhover();
-		
     }
 	
 	override function isHovering()
@@ -64,20 +72,24 @@ class TrollButton extends TrollComponent
 			case MOUSE_ENTER:
 				onHover();
 				state = HOVERED;
-			case MOUSE_MOVED:
-				if(state == IDLE){
-					state = HOVERED;
-					onHover();
-				}
+				uiParent.handleEvent(ENTER_EVENT, this, null);
+
 			case MOUSE_LEAVE:
 				onUnhover();
 				state = IDLE;
+				uiParent.handleEvent(LEAVE_EVENT, this, null);
 			case MOUSE_PRESSED:
-				state = PRESSED;
 				onPress();
+				state = PRESSED;
+				uiParent.handleEvent(DOWN_EVENT, this, null);
 			case MOUSE_RELEASED:
-				state = isHovering() ? HOVERED : IDLE;
-				onRelease();
+				if (state == PRESSED)
+				{
+					onRelease();
+					state = isHovering() ? HOVERED : IDLE;
+					uiParent.handleEvent(CLICK_EVENT, this, null);
+				}
+			default:
 		}
 	}
 	
@@ -88,6 +100,8 @@ class TrollButton extends TrollComponent
 	}
 
 	public function updateButtonVisuals() {
+		label.x = x + labelCenterX;
+		label.y = y + labelCenterY;
 		switch(state){
 			case IDLE:
 				bg.animation.play("idle", true);
@@ -95,9 +109,11 @@ class TrollButton extends TrollComponent
 				bg.animation.play("hover", true);
 			case PRESSED:
 				bg.animation.play("press", true);
+				label.y += 1;
 		}
-
 	}
+
+	// BRB PISSING
 
 	public dynamic function onHover() {}
 	public dynamic function onUnhover() {}

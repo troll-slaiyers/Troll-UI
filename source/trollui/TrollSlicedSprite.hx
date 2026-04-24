@@ -22,10 +22,9 @@ using flixel.util.FlxColorTransformUtil;
 
 class TrollSlicedSprite extends FlxSprite implements IComponent
 {	
-	@:isVar
 	public var uiParent(default, set):TrollUI;
 
-	public function set_uiParent(ui:TrollUI)
+	function set_uiParent(ui:TrollUI)
 	{
 		if (uiParent != null)
 		{

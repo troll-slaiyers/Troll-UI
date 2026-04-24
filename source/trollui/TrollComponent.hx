@@ -24,6 +24,11 @@ interface IComponent {
 	private function checkInput():Void;
 }
 
+// I hope this is fsater than reflection lmao
+interface IPostDraw
+{
+	function postDraw():Void;
+}
 
 enum UIEvent {
 	MOUSE_ENTER;
@@ -43,11 +48,10 @@ class TrollComponent extends FlxSpriteGroup implements IComponent
 	@:noCompletion
 	public var parent:IComponent;
 
-	@:noCompletion
-	@:isVar
 	public var uiParent(default, set):TrollUI;
 
-	public function set_uiParent(ui:TrollUI)
+	@:noCompletion
+	function set_uiParent(ui:TrollUI)
 	{
 		if (uiParent != null)
 		{
@@ -127,11 +131,6 @@ class TrollComponent extends FlxSpriteGroup implements IComponent
 		super.update(deltaTime);
 	}
 
-	override function destroy() 
-	{
-		super.destroy();
-	}
-
 	override function draw():Void
 	{
 		@:privateAccess
@@ -146,6 +145,12 @@ class TrollComponent extends FlxSpriteGroup implements IComponent
 		{
 			if (basic != null && basic.exists && basic.visible)
 				basic.draw();
+		}
+
+		for (basic in members)
+		{
+			if (basic != null && basic.exists && basic.visible && basic is IPostDraw)
+				cast(basic, IPostDraw).postDraw();
 		}
 
 		@:privateAccess

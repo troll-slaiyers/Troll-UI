@@ -21,10 +21,14 @@ enum CursorType
 	TEXT_INPUT;
 }
 
-class TrollUI extends FlxTypedGroup<FlxBasic> {
-		
-	public dynamic function handleCursor(cursor: CursorType){
-		switch(cursor){
+class TrollUI extends FlxTypedGroup<FlxBasic>
+{
+	public dynamic function handleEvent(name:String, sender:IComponent, data:Dynamic) {}
+
+	public dynamic function handleCursor(cursor:CursorType)
+	{
+		switch (cursor)
+		{
 			case NONE:
 				Mouse.cursor = MouseCursor.AUTO;
 			case DRAG:
@@ -83,9 +87,8 @@ class TrollUI extends FlxTypedGroup<FlxBasic> {
 		}
 
 		if(hoveringComponent != null){
-			if(FlxG.mouse.justPressed){
+			if (FlxG.mouse.justPressed)
 				hoveringComponent.handleInput(MOUSE_PRESSED);
-			}
 
 			if(FlxG.mouse.justReleased)
 				hoveringComponent.handleInput(MOUSE_RELEASED);
@@ -102,7 +105,6 @@ class TrollUI extends FlxTypedGroup<FlxBasic> {
 		}
 
 		oldHoveringComponent = hoveringComponent;
-		
 	}
 
 }
