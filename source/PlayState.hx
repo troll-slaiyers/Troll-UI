@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -21,13 +22,6 @@ class PlayState extends FlxState
 		FlxG.camera.bgColor = 0xFF444444;
 
 		parent = new TrollUI();
-		parent.handleEvent = (event, sender, data) ->
-		{
-			if (event == TrollButton.CLICK_EVENT)
-			{
-				trace("button clicked");
-			}
-		}
 		add(parent);
 		
 		var container:TrollContainer = new TrollContainer(0, 0, 350, 200);
@@ -38,6 +32,7 @@ class PlayState extends FlxState
 
 		var button: TrollButton = new TrollButton(50, 75, "Butt Bad", 100, 25);
 		button.color = 0xFFFF0000;
+		button.name = "bad_button";
 		container.add(button);
 	
 		var container2:TrollContainer = new TrollContainer(400, 0, 200, 200);
@@ -45,7 +40,24 @@ class PlayState extends FlxState
 
 		var button: TrollButton = new TrollButton(50, 75, "Butt Good", 100, 25);
 		button.color = 0xFF00FF00;
+		button.name = "good_button";
 		container2.add(button);
+		parent.handleEvent = (event, sender, data) ->
+		{
+			if (event == TrollButton.CLICK_EVENT)
+			{
+				switch (sender.name)
+				{
+					case "good_button":
+						text.text = "GOOD";
+						text.color = 0xFFFF0000;
+					case "bad_button":
+						text.text = "BAD";
+						text.color = 0xFF00FF00;
+				}
+			}
+		}
+		
 	}
 
 	var t:Float = 0;

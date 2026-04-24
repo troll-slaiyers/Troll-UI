@@ -22,6 +22,8 @@ using flixel.util.FlxColorTransformUtil;
 
 class TrollSlicedSprite extends FlxSprite implements IComponent
 {	
+	public var name:String = "new_component";
+	
 	public var uiParent(default, set):TrollUI;
 
 	function set_uiParent(ui:TrollUI)

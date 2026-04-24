@@ -12,6 +12,8 @@ import openfl.ui.Mouse;
 import trollui.TrollUI.CursorType;
 
 interface IComponent {
+	var name:String;
+
 	var uiParent(default, set):TrollUI;
 	var hovered:Bool;
 	var parent:IComponent;
@@ -40,6 +42,8 @@ enum UIEvent {
 
 class TrollComponent extends FlxSpriteGroup implements IComponent
 {
+	public var name:String = "new_component";
+
 	public var childrenAcceptInput:Bool = true;
 	public var cursor:CursorType = NONE;
 
