@@ -10,10 +10,11 @@ import flixel.util.FlxColor;
 
 class TrollLabel extends FlxText
 {
-    public function new(x: Float, y:Float, fieldWidth: Float = 0, text:String = "") 
+	public function new(x:Float, y:Float, fieldWidth:Float = 0, text:String = "", variant:String = "semibold") 
 	{
 		super(x, y, fieldWidth, text, 12);
-		setFormat("assets/fonts/segoeui.ttf", 12, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE_FAST, FlxColor.BLACK); // TODO: Change to Paths in troll engine
+		setFormat("assets/fonts/ibmplexmono/" + variant + ".ttf", 12, FlxColor.WHITE); // TODO: Change to Paths in troll engine
+		antialiasing = true;
 		active = false;
 	}
 }

@@ -2,6 +2,7 @@ package trollui;
 
 import flixel.FlxG;
 import flixel.text.FlxText.FlxTextAlign;
+import flixel.util.FlxColor;
 import trollui.TrollComponent.UIEvent;
 
 enum PreSsState {
@@ -27,6 +28,14 @@ class ButtonBack extends TrollSlicedSprite
 
 class TrollButton extends TrollComponent
 {
+	public dynamic function onHover() {}
+
+	public dynamic function onUnhover() {}
+
+	public dynamic function onPress() {}
+
+	public dynamic function onRelease() {}
+	
 	public static final DOWN_EVENT = "down_button";
 	public static final ENTER_EVENT = "enter_button";
 	public static final LEAVE_EVENT = "leave_button";
@@ -34,24 +43,27 @@ class TrollButton extends TrollComponent
 
 	var state: PreSsState = IDLE;
 
-	var bg: ButtonBack;
-	var label: TrollLabel;
+	public var bg:ButtonBack;
+	public var label:TrollLabel;
 
 	var labelCenterX:Float = 0;
 	var labelCenterY:Float = 0;
 	
-	public function new(x: Float, y:Float, text:String, width:Float = 0, height:Float = 0)
+	public function new(x:Float, y:Float, text:String, width:Float = 0, height:Float = 0, color:FlxColor = FlxColor.WHITE)
 	{
 		super(x, y);
 		cursor = CLICK;
 		childrenAcceptInput = false;
 		bg = new ButtonBack(width, height);
 		add(bg);
-		
+
+
 		label = new TrollLabel(0, 0, width, text);
+		label.color = FlxColor.WHITE;
 		label.alignment = FlxTextAlign.CENTER;
 		add(label);
 
+		this.color = color;
 		if(width == 0)
 			bg.width = label.fieldWidth;
 
@@ -63,6 +75,11 @@ class TrollButton extends TrollComponent
 
 		onUnhover();
     }
+	override function set_color(clr:FlxColor)
+	{
+		bg.color = clr;
+		return color = clr;
+	}
 	
 	override function isHovering()
 		return bg.isHovering();
@@ -112,11 +129,4 @@ class TrollButton extends TrollComponent
 				label.y += 1;
 		}
 	}
-
-	// BRB PISSING
-
-	public dynamic function onHover() {}
-	public dynamic function onUnhover() {}
-	public dynamic function onPress() {}
-	public dynamic function onRelease() {}
 }

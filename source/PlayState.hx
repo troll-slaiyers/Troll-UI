@@ -30,16 +30,15 @@ class PlayState extends FlxState
 		var text: TrollLabel = new TrollLabel(25, 25, 0, "Test");
 		container.add(text);
 
-		var button: TrollButton = new TrollButton(50, 75, "Butt Bad", 100, 25);
-		button.color = 0xFFFF0000;
+		var button:TrollButton = new TrollButton(50, 75, "Butt Bad", 100, 25, FlxColor.RED);
 		button.name = "bad_button";
 		container.add(button);
 	
 		var container2:TrollContainer = new TrollContainer(400, 0, 200, 200);
 		parent.add(container2);
 
-		var button: TrollButton = new TrollButton(50, 75, "Butt Good", 100, 25);
-		button.color = 0xFF00FF00;
+		var button:TrollButton = new TrollButton(50, 75, "Butt Good", 100, 25, FlxColor.GREEN);
+
 		button.name = "good_button";
 		container2.add(button);
 		parent.handleEvent = (event, sender, data) ->
