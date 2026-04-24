@@ -7,22 +7,23 @@ import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 import trollui.TrollButton;
 import trollui.TrollContainer;
-import trollui.TrollGroup;
 import trollui.TrollLabel;
+import trollui.TrollUI;
 
 class PlayState extends FlxState
 {
-	var parent: TrollGroup;
+	var parent:TrollUI;
 	var testSprite: FlxSprite;
 	override public function create()
 	{	
+		FlxG.mouse.useSystemCursor = true;
 		
 		FlxG.camera.bgColor = 0xFF444444;
 
-		parent = new TrollGroup();
+		parent = new TrollUI();
 		add(parent);
 		
-		var container: TrollGroup = new TrollContainer(0, 0, 350, 200);
+		var container:TrollContainer = new TrollContainer(0, 0, 350, 200);
 		parent.add(container);
 
 		var text: TrollLabel = new TrollLabel(25, 25, 0, "Test");
@@ -32,7 +33,7 @@ class PlayState extends FlxState
 		button.color = 0xFFFF0000;
 		container.add(button);
 	
-		var container2: TrollGroup = new TrollContainer(100, 0, 150, 200);
+		var container2:TrollContainer = new TrollContainer(100, 0, 150, 200);
 		parent.add(container2);
 
 		var button: TrollButton = new TrollButton(50, 75, "Butt Good", 100, 25);

@@ -7,15 +7,23 @@ import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
 import flixel.util.FlxDestroyUtil;
+import lime.ui.MouseCursor;
+import openfl.ui.Mouse;
+import trollui.TrollUI.CursorType;
 
 interface IComponent {
-	var _hovered: Bool;
+	var uiParent(default, set):TrollUI;
+	var hovered:Bool;
 	var parent:IComponent;
-	public function isHovering(): Bool;
+	var cursor:CursorType;
+
+	function isHovering():Bool;
 	function getCamera(): FlxCamera;
 	function getCameras(): Array<FlxCamera>;
 	function handleInput(uiEvent: UIEvent): Void;
+	private function checkInput():Void;
 }
+
 
 enum UIEvent {
 	MOUSE_ENTER;
@@ -27,15 +35,40 @@ enum UIEvent {
 
 class TrollComponent extends FlxSpriteGroup implements IComponent
 {
-	public function handleInput(event: UIEvent)
-	{
-		
-	}
-	
-	@:noCompletion
-	public var _hovered: Bool = false; // ONLY FOR INTERNAL USE
+	public var childrenAcceptInput:Bool = true;
+	public var cursor:CursorType = NONE;
 
-	public var parent: IComponent;
+	public function handleInput(event:UIEvent) {}
+
+	@:noCompletion
+	public var parent:IComponent;
+
+	@:noCompletion
+	@:isVar
+	public var uiParent(default, set):TrollUI;
+
+	public function set_uiParent(ui:TrollUI)
+	{
+		if (uiParent != null)
+		{
+			uiParent.remove(this);
+			uiParent.objects.remove(this);
+		}
+
+		if (ui != null && !ui.objects.contains(this))
+			ui.objects.push(this);
+
+		for (member in members)
+		{
+			if (member is IComponent)
+				cast(member, IComponent).uiParent = ui;
+		}
+
+		return uiParent = ui;
+	}
+
+	@:noCompletion
+	public var hovered:Bool = false;
 
 	public inline function getCamera()
 	{
@@ -52,20 +85,47 @@ class TrollComponent extends FlxSpriteGroup implements IComponent
 
 	override function preAdd(o: FlxSprite)
 	{
-		if(o is IComponent)
+		if (o is IComponent)
+		{
 			cast(o, IComponent).parent = this;
+			cast(o, IComponent).uiParent = uiParent;
+		}
 
 		return super.preAdd(o);
 	}
 
 	override function remove(o: FlxSprite, splice: Bool = false)
 	{
-		if(o is IComponent && members.contains(o))
+		if (o is IComponent && members.contains(o))
+		{
 			cast(o, IComponent).parent = null;
+			cast(o, IComponent).uiParent = null;
+		}
 
 		return super.remove(o, splice);
 	}
 
+	@:allow(TrollComponent)
+	private function checkInput()
+	{
+		if (isHovering())
+			uiParent.setHovering(this);
+	}
+
+	override function update(deltaTime:Float)
+	{
+		if (parent == null)
+			checkInput();
+
+		if (childrenAcceptInput)
+		{
+			for (member in members)
+				if (member != null && member.active && member.exists && member is IComponent)
+					cast(member, IComponent).checkInput();
+		}
+
+		super.update(deltaTime);
+	}
 
 	override function destroy() 
 	{

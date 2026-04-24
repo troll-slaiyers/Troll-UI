@@ -34,7 +34,9 @@ class TrollButton extends TrollComponent
 
 	public function new(x: Float, y:Float, text:String, width:Float = 0, height:Float = 0)
 	{
-        super(x, y);
+		super(x, y);
+		cursor = CLICK;
+		childrenAcceptInput = false;
 		bg = new ButtonBack(width, height);
 		add(bg);
 		
@@ -81,33 +83,6 @@ class TrollButton extends TrollComponent
 	
 	override function update(elapsed: Float)
 	{
-/* 		switch (state) {
-			case IDLE:
-				if(isHovering())
-				{
-					state = HOVERED;
-					onHover();
-				}
-			case HOVERED:
-				if(!isHovering())
-				{
-					state = IDLE;
-					onUnhover();
-				}else if(FlxG.mouse.justPressed){
-					state = PRESSED;
-					onPress();
-				}
-			case PRESSED:
-				if(!isHovering()){
-					state = IDLE;
-					onUnhover();
-				}else if(FlxG.mouse.justReleased){
-					state = isHovering() ? HOVERED : IDLE;
-					onRelease();
-				}
-			default:
-		} */
-
 		updateButtonVisuals();
 		super.update(elapsed);
 	}

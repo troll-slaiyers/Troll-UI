@@ -1,6 +1,7 @@
 package trollui;
 
-class TrollContainer extends TrollGroup 
+// TODO: Expand this into something that can have basic layouts etc
+class TrollContainer extends TrollComponent 
 {
 	var panel: TrollPanel;
 	public function new(x:Float = 0, y:Float = 0, ?width:Float, ?height: Float)

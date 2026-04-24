@@ -13,6 +13,7 @@ import flixel.util.FlxColor;
 import openfl.geom.ColorTransform;
 import trollui.TrollComponent.IComponent;
 import trollui.TrollComponent.UIEvent;
+import trollui.TrollUI.CursorType;
 
 using flixel.util.FlxColorTransformUtil;
 
@@ -21,10 +22,26 @@ using flixel.util.FlxColorTransformUtil;
 
 class TrollSlicedSprite extends FlxSprite implements IComponent
 {	
+	@:isVar
+	public var uiParent(default, set):TrollUI;
+
+	public function set_uiParent(ui:TrollUI)
+	{
+		if (uiParent != null)
+		{
+			uiParent.remove(this);
+			uiParent.objects.remove(this);
+		}
+
+		if (ui != null && !ui.objects.contains(this))
+			ui.objects.push(this);
+
+		return uiParent = ui;
+	}
+
+	public var cursor:CursorType = NONE;
 	public function handleInput(event: UIEvent){} // just for the interface
-	
-	@:noCompletion
-	public var _hovered: Bool = false; // ONLY FOR INTERNAL USE
+	public var hovered:Bool = false;
 
 
 	// L, T, R, B
@@ -58,6 +75,20 @@ class TrollSlicedSprite extends FlxSprite implements IComponent
 
 	public function isHovering()
 		return FlxG.mouse.overlaps(this, getCamera());
+
+	private function checkInput()
+	{
+		if (isHovering())
+			uiParent.setHovering(this);
+	}
+
+	override function update(deltaTime:Float)
+	{
+		if (parent == null)
+			checkInput();
+
+		super.update(deltaTime);
+	}
 
 	// How I do 9-slices requires complex rendering
 	// So it should never be simple render
