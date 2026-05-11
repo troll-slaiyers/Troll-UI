@@ -4,6 +4,7 @@ import flixel.FlxCamera;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxFrame;
 import flixel.graphics.tile.FlxDrawQuadsItem;
+import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.math.FlxMatrix;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
@@ -21,11 +22,14 @@ class SlicedSprite extends FlxSprite
 
 	public var minSize: FlxPoint;
 
-	public function new(x: Float = 0, y: Float = 0, ?width: Float, ?height: Float, ?graphic: String, ?margins:Array<Int>)
+	public function new(x: Float = 0, y: Float = 0, ?width: Float, ?height: Float, ?graphic: FlxGraphicAsset, ?margins:Array<Int>)
 	{
 		super(x, y);
 		antialiasing = false;
-		loadGraphic(graphic ?? "assets/images/panel.png");
+
+		loadGraphic(graphic);
+		if (this.graphic == null)
+			loadGraphic("assets/images/panel.png");
 
 		if(margins != null)
 			borderMargins = margins;
