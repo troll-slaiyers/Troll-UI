@@ -29,7 +29,7 @@ class SlicedSprite extends FlxSprite
 
 		loadGraphic(graphic);
 		if (this.graphic == null)
-			loadGraphic("assets/images/panel.png");
+			loadGraphic("troll-ui/images/panel.png");
 
 		if(margins != null)
 			borderMargins = margins;

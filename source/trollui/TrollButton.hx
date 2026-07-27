@@ -16,7 +16,7 @@ class ButtonBack extends TrollSlicedSprite
 {
 	public function new(width: Float, height: Float){
 		super(0, 0, width, height);
-		loadGraphic("assets/images/button.png", true, 22, 22);
+		loadGraphic("troll-ui/images/button.png", true, 22, 22);
 		borderMargins = [5, 5, 5, 5];
 		animation.add("idle", [0], 0, false);
 		animation.add("hover", [1], 0, false);

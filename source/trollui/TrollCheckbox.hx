@@ -28,10 +28,10 @@ class TrollCheckbox extends TrollComponent
 	public function new(x:Float, y:Float, text:String, defaultValue:Bool = false)
 	{
 		super(x, y);
-		back = new FlxSprite(0, 0).loadGraphic("assets/images/checkbox.png");
+		back = new FlxSprite(0, 0).loadGraphic("troll-ui/images/checkbox.png");
 		add(back);
 
-		checkmark = new FlxSprite(0, 0).loadGraphic("assets/images/checkmark.png");
+		checkmark = new FlxSprite(0, 0).loadGraphic("troll-ui/images/checkmark.png");
 		add(checkmark);
 
 		label = new TrollLabel(back.width, 0, 0, text, "bold");
