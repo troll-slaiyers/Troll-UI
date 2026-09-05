@@ -48,16 +48,16 @@ class TrollUI extends FlxTypedGroup<FlxBasic>
 
 	override function add(obj: FlxBasic): FlxBasic
 	{
-		if(obj is IComponent)
-			cast(obj, IComponent).uiParent = this;
+		if (obj is IComponent)
+			(cast obj:IComponent).uiParent = this;
 
 		return super.add(obj);
 	}
 
 	override function remove(obj: FlxBasic, splice = false): FlxBasic
 	{
-		if(obj is IComponent)
-			cast(obj, IComponent).uiParent = null;
+		if (obj is IComponent)
+			(cast obj:IComponent).uiParent = null;
 
 		return super.remove(obj);
 	}

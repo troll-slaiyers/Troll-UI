@@ -27,6 +27,7 @@ interface IComponent {
 }
 
 // I hope this is fsater than reflection lmao
+// This turns into reflection when compiled </3
 interface IPostDraw
 {
 	function postDraw():Void;
@@ -69,7 +70,7 @@ class TrollComponent extends FlxSpriteGroup implements IComponent
 		for (member in members)
 		{
 			if (member is IComponent)
-				cast(member, IComponent).uiParent = ui;
+				(cast member:IComponent).uiParent = ui;
 		}
 
 		return uiParent = ui;
@@ -95,8 +96,8 @@ class TrollComponent extends FlxSpriteGroup implements IComponent
 	{
 		if (o is IComponent)
 		{
-			cast(o, IComponent).parent = this;
-			cast(o, IComponent).uiParent = uiParent;
+			(cast o:IComponent).parent = this;
+			(cast o:IComponent).uiParent = uiParent;
 		}
 
 		return super.preAdd(o);
@@ -106,8 +107,8 @@ class TrollComponent extends FlxSpriteGroup implements IComponent
 	{
 		if (o is IComponent && members.contains(o))
 		{
-			cast(o, IComponent).parent = null;
-			cast(o, IComponent).uiParent = null;
+			(cast o:IComponent).parent = null;
+			(cast o:IComponent).uiParent = null;
 		}
 
 		return super.remove(o, splice);
@@ -129,7 +130,7 @@ class TrollComponent extends FlxSpriteGroup implements IComponent
 		{
 			for (member in members)
 				if (member != null && member.active && member.exists && member is IComponent)
-					cast(member, IComponent).checkInput();
+					(cast member:IComponent).checkInput();
 		}
 
 		super.update(deltaTime);
@@ -154,7 +155,7 @@ class TrollComponent extends FlxSpriteGroup implements IComponent
 		for (basic in members)
 		{
 			if (basic != null && basic.exists && basic.visible && basic is IPostDraw)
-				cast(basic, IPostDraw).postDraw();
+				(cast basic:IPostDraw).postDraw();
 		}
 
 		@:privateAccess
