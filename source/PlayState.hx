@@ -10,6 +10,7 @@ import trollui.TrollButton;
 import trollui.TrollCheckbox;
 import trollui.TrollContainer;
 import trollui.TrollLabel;
+import trollui.TrollSlider;
 import trollui.TrollUI;
 
 class PlayState extends FlxState
@@ -37,6 +38,11 @@ class PlayState extends FlxState
 		var button:TrollButton = new TrollButton(50, 75, "Butt Bad", 100, 25, FlxColor.RED);
 		button.name = "bad_button";
 		container.add(button);
+
+		var image:FlxSprite = new FlxSprite(200, 50, "flixel/images/logo/default.png");
+		image.setGraphicSize(100, 100);
+		image.updateHitbox();
+		container.add(image);
 	
 		var container2:TrollContainer = new TrollContainer(400, 0, 200, 200);
 		parent.add(container2);
@@ -44,7 +50,12 @@ class PlayState extends FlxState
 		var button:TrollButton = new TrollButton(50, 75, "Butt Good", 100, 25, FlxColor.LIME);
 		button.name = "good_button";
 		container2.add(button);
-		parent.handleEvent = (event, sender, data) ->
+
+		var slider:TrollSlider = new TrollSlider(50, 150, 0.5, 0, 1);
+		container2.add(slider);
+
+		////
+		parent.handleEvent = (event, sender, data:Dynamic) ->
 		{
 			if (event == TrollButton.CLICK_EVENT)
 			{
@@ -61,6 +72,11 @@ class PlayState extends FlxState
 			else if (event == TrollCheckbox.CLICK_EVENT)
 			{
 				trace("checked box " + data);
+			}
+			else if (event == TrollSlider.CHANGE_EVENT)
+			{
+				trace("slider value " + data);
+				image.alpha = data;
 			}
 		}
 		
