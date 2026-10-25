@@ -1,15 +1,16 @@
 package trollui;
 
-import flixel.util.FlxStringUtil;
-import flixel.util.helpers.FlxRange;
-import flixel.util.FlxColor;
 import flixel.FlxG;
-import trollui.TrollComponent.UIEvent;
 import flixel.FlxSprite;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
+import trollui.TrollComponent.UIEvent;
 
 class TrollSlider extends TrollComponent
 {
 	public static final CHANGE_EVENT = "change_slider";
+	public static final GRAB_EVENT = "grab_slider";
+	public static final RELEASE_EVENT = "release_slider";
 
 	public var value(default, set):Float;
 	public var minValue(default, null):Float;
@@ -21,7 +22,9 @@ class TrollSlider extends TrollComponent
 	public var valueLabel:TrollLabel;
 
 	public var grabbed:Bool = false;
-	
+
+	private var _showLabel:Bool = false;
+	private var _showLabelTimer:Float = 0.0;
 	private var _adjustPosition:Bool = false;
 
 	public function new(x:Float = 0.0, y:Float = 0.0, value:Float, minValue:Float, maxValue:Float)
@@ -38,6 +41,9 @@ class TrollSlider extends TrollComponent
 		knob.y = bar.y - (knob.height - bar.height) / 2;
 
 		valueLabel = new TrollLabel(0, 20, 100, '_');
+		valueLabel.textField.backgroundColor = 0xFF000000;
+		valueLabel.textField.background = true;
+		valueLabel.alpha = 0.0;
 		add(valueLabel);
 
 		this.value = value;
@@ -58,13 +64,30 @@ class TrollSlider extends TrollComponent
 			value = maxValue;
 	}
 
+	function onGrab() {
+		_showLabel = true;
+		_showLabelTimer = 0.0;
+		uiParent.handleEvent(GRAB_EVENT, this, value);
+	}
+
+	function onRelease() {
+		_showLabel = false;
+		_showLabelTimer = 0.0;
+		uiParent.handleEvent(RELEASE_EVENT, this, value);
+	}
+
 	////
 	override function handleInput(event:UIEvent) {
 		switch(event) {
 			case MOUSE_PRESSED:
 				grabbed = true;
+				onGrab();
+				
 			case MOUSE_RELEASED:
-				grabbed = false;
+				if (grabbed) {
+					grabbed = false;
+					onRelease();
+				}
 			default:
 		}
 	}
@@ -90,6 +113,7 @@ class TrollSlider extends TrollComponent
 			//// Well
 			if (FlxG.mouse.justReleased) {
 				grabbed = false;
+				onRelease();
 			}
 		}
 
@@ -100,6 +124,9 @@ class TrollSlider extends TrollComponent
 			knob.x = bar.x + percent * bar.width - knob.width / 2;
 
 			valueLabel.text = formatValue(value);
+			valueLabel.updateHitbox();
+			valueLabel.x = knob.x + (knob.width - valueLabel.width) / 2;
+			valueLabel.y = knob.y - valueLabel.height - 4;
 		}
 		
 		super.update(elapsed);
